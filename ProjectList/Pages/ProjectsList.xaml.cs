@@ -24,14 +24,15 @@ namespace ProjectList.Pages
         internal ProjectsList(MVVM mvvm)
         {
             InitializeComponent();
-
             DataContext = mvvm;
+
+
 
         }
 
         private void View_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show( ((Project)((ListView)sender).SelectedItem).Name);
+            //MessageBox.Show( ((Project)((ListView)sender).SelectedItem).Name);
         }
     }
 }

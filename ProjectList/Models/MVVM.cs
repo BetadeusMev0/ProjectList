@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Linq;
 
 namespace ProjectList.Models
 {
@@ -24,7 +25,32 @@ namespace ProjectList.Models
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
+        public PCommands AddCommand
+        {
+            get
+            {
+                return new PCommands((obj) =>
+                {
+                    try
+                    {
+                        this.projects.Add(new Project("new project", "this new project", DateTime.Now, DateTime.Now));
+                    }
+                    catch { }
+                });
+            }
+        }
+
+
+
     }
+
+
+
+
+
+
+
 
     public class PCommands : ICommand
     {

@@ -18,13 +18,20 @@ namespace ProjectList.Models
         protected DateTime _startDate;
         protected DateTime _endDate;
 
-        public ObservableCollection<PTask> Tasks = new();
+
+
+
+        public ObservableCollection<PTask> tasks { get; set; }
+        private PTask _selectedTask;
+
+
+        public PTask SelectedTask { get { return _selectedTask; } set { _selectedTask = value; OnPropertyChanged("SelectedProject"); } }
+
 
 
 
         public string Name { get { return _name;}  set { _name = value; OnPropertyChanged("Name"); } }
         public string Description { get { return _description; } set { _description = value; OnPropertyChanged("Description"); } }
-
         public DateTime StartDate { get { return _startDate;}
             set
             {
@@ -45,18 +52,62 @@ namespace ProjectList.Models
             _description= description;
             _startDate= startDate;
             _endDate= endDate;
+            tasks = new ObservableCollection<PTask>();
+            tasks.Add(new PTask(1, "example", "dsa"));
+            tasks.Add(new PTask(2, "gexample", "dsa"));
+            tasks.Add(new PTask(3, "sexample", "dsa"));
         }
 
-        public PCommands TestCommand 
+        public PCommands RemoveCommand
         {
             get 
             {
                 return new PCommands((obj) =>
                 {
-                    (((ObservableCollection<Project>)((ListView)obj).ItemsSource)).Remove(this);
+                    try
+                    {
+                        (((ObservableCollection<Project>)((ListView)obj).ItemsSource)).Remove(this);
+                    }
+                    catch { }
                 });
             }
         }
+        public PCommands AddCommand
+        {
+            get
+            {
+                return new PCommands((obj) =>
+                {
+                    try
+                    {
+                        tasks.Add(new PTask(tasks.Count, "Example", "description"));
+                    }
+                    catch { }
+                });
+            }
+        }
+
+
+
+
+
+
+        public PCommands TestCommand
+        {
+            get
+            {
+                return new PCommands((obj) =>
+                {
+                    try
+                    {
+                        Name = "UGA BUGA";
+                    }
+                    catch { }
+                });
+            }
+        }
+
+
 
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -45,14 +45,48 @@
                                         <TextBlock Margin="10 0 0 0" Grid.Column="1" Text="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"/>
                                     </Grid>
                                 </StackPanel>
-                                <Button Grid.Row="1" Content="Open card" FontSize="12" Height="35" Width="80" Margin="0 0 10 8" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
-                                <Button Grid.Row="1" Content="Remove" FontSize="12" Height="35" Width="80" Margin="8 0 10 8" VerticalAlignment="Bottom" HorizontalAlignment="Left" Command="{Binding TestCommand}" CommandParameter="{Binding ElementName=View}"/>
+                                <!--<Button Grid.Row="1" Content="Open card" FontSize="12" Height="35" Width="80" Margin="0 0 10 8" VerticalAlignment="Bottom" HorizontalAlignment="Right" />-->
+                                <Button Grid.Row="1" Content="Remove" FontSize="12" Height="35" Width="80" Margin="8 0 10 8" VerticalAlignment="Bottom" HorizontalAlignment="Left" Command="{Binding RemoveCommand}" CommandParameter="{Binding ElementName=View}"/>
                             </Grid>
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <TextBlock Grid.Column="1" Text="{Binding Name}" DataContext="{Binding SelectedProject, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Content="+" Width="40" Height="40" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" FontSize="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="40 20" Command="{Binding AddCommand}"/>
+        <Grid Grid.Column="1">
+            <!--<TextBlock Text="{Binding Name}" DataContext="{Binding SelectedProject, UpdateSourceTrigger=PropertyChanged}"/>-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <StackPanel DataContext="{Binding SelectedProject, UpdateSourceTrigger=PropertyChanged}">
+                <Label Content="Project Name:"/>
+                <TextBox Text="{Binding Name}"/>
+                <Label Content="Description:"/>
+                <TextBox Height="40" Text="{Binding Description}"/>
+                <Label Content="Date:"/>
+                <DatePicker SelectedDate="{Binding StartDate}"/>
+                <DatePicker SelectedDate="{Binding EndDate}"/>
+                <!--<Button Content="CommitChanges" Command="{Binding TestCommand}"/>-->
+            </StackPanel>
+            <DataGrid Grid.Row="1" AutoGenerateColumns="False" DataContext="{Binding SelectedProject, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding tasks}">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="Complete" Binding="{Binding Path = 'Completed'}"/>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Path='Id'}"  />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path='Name'}"  />
+                    <DataGridTextColumn Header="Description" Binding="{Binding Path='Description'}"  />
+                    <DataGridTemplateColumn Header="Remove">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="1" Width="40" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20 20" Content="+" FontSize="25" DataContext="{Binding SelectedProject}" Command="{Binding AddCommand}"/>
+
+        </Grid>
     </Grid>
 </Page>
